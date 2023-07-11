@@ -18,3 +18,19 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
+/* -- all */
+html, body {
+	border: 5px solid red;
+}
+
+.center-items {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* -- navbar */
+#icon-input-contain {
+	border: 2px solid red;
+}

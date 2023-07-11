@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: {
-  test: string;
+  search: string;
 } = {
-  test: ''
+  search: ''
 }
 
-export const sampleSlice = createSlice({
-  name: 'sample',
+export const dataSlice = createSlice({
+  name: 'stackoverfaux',
   initialState,
   reducers: {
-    updateTest: (state, action) => {
-      state.test = action.payload;
+    updateSearch: (state, action) => {
+      state.search = action.payload;
     },
   }
 });
 
-export const { updateTest } = sampleSlice.actions;
-export default sampleSlice.reducer;
+export const { updateSearch } = dataSlice.actions;
+export default dataSlice.reducer;

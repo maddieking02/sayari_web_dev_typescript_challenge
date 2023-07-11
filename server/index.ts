@@ -15,6 +15,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
+router.get('/results', controllers.getResults)
 router.get('/posts/:post_id?/:post_title', controllers.getPost)
 
 app.listen(PORT, () => {
