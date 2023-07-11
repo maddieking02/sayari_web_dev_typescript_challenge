@@ -21,7 +21,7 @@ time, mark, audio, video {
 
 /* -- all */
 html, body {
-	border: 5px solid red;
+	border: 2px solid red;
 }
 
 .center-items {
@@ -32,5 +32,5 @@ html, body {
 
 /* -- navbar */
 #icon-input-contain {
-	border: 2px solid red;
+	border: 2px solid blue;
 }

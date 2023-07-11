@@ -17,7 +17,7 @@ export const Nav = (): React.JSX.Element => {
 
   return (
     <div>
-      <div id="icon-input-contain center-items">
+      <div id="icon-input-contain" className="center-items">
         <BiSearch />
         <input
           id="search-input"
