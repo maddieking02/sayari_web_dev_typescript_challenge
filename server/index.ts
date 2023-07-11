@@ -4,7 +4,6 @@ const router = require("express").Router();
 const path = require("path");
 const PORT = process.env.PORT;
 
-
 const app = express();
 
 app.use(express.json());

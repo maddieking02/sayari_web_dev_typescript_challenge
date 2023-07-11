@@ -1,0 +1,227 @@
+[
+  {
+    "id": 68462879,
+    "title": "How to force a compile error in C++(17) if a function return value isn&#39;t checked? Ideally through the type system",
+    "body": "<p>We are writing safety critical code and I'd like a stronger way than [[nodiscard]] to ensure that <em>checking of</em> function return values is caught by the compiler.</p>\n<p>Constraints:</p>\n<ul>\n<li>MSVC++ 2019</li>\n<li>Something that <em>doesn't</em> rely on warnings</li>\n<li>Warnings-as-Errors also doesn't work</li>\n<li>It's not feasible to constantly run static analysis</li>\n<li>Macros are OK</li>\n<li>Not a runtime check, but caught by the compiler</li>\n<li>Not exception based</li>\n</ul>\n<p>I've been trying to think how to create a type(s) that, if it's not assigned to a variable from a function return, the compiler flags an error.</p>\n<p>Example:</p>\n<pre><code>struct MustCheck\n{\n  bool success;\n  ...???... \n};\n\nMustCheck DoSomething( args )\n{\n  ...\n  return MustCheck{true};\n}\n\nint main(void) {\n  MustCheck res = DoSomething(blah);\n  if( !res.success ) { exit(-1); }\n\n  DoSomething( bloop ); // &lt;------- compiler error\n}\n  \n</code></pre>\n<p>If such a thing is provably impossible through the type system, I'll also accept that answer ;)</p>\n",
+    "creation": 1626829337,
+    "score": 3,
+    "user": {
+      "id": 1610174,
+      "name": "daemacles"
+    },
+    "comments": [
+      {
+        "id": 120995277,
+        "body": "If checking the return value is so important, why don&#39;t you throw an exception?",
+        "user": {
+          "id": 4706785,
+          "name": "Peter"
+        }
+      },
+      {
+        "id": 120995290,
+        "body": "Although compilers are &quot;encouraged&quot; to issue a warning with <code>[[nodiscard]]</code> if the return value is discarded, most compilers can be configured to treat warnings as errors, and cease compilation.   Microsoft compilers and IDEs support such an option.",
+        "user": {
+          "id": 4706785,
+          "name": "Peter"
+        }
+      },
+      {
+        "id": 120995303,
+        "body": "C++ just doesn&#39;t work this way. The native way to do this in C++ is to throw an exception upon failure, so a successful return from a function indicates that it succeeded.",
+        "user": {
+          "id": 3943312,
+          "name": "Sam Varshavchik"
+        }
+      },
+      {
+        "id": 120995354,
+        "body": "@Peter I understand about warnings-as-errors, but that is still based on warnings",
+        "user": {
+          "id": 1610174,
+          "name": "daemacles"
+        }
+      },
+      {
+        "id": 120995367,
+        "body": "Also, bear in mind, that any approach that (attempts at) forcing the caller to check a return value can be explicitly circumvented by the caller.   For example, if the compiler issues warnings/errors because of <code>[[nodiscard]]</code>, the caller can still beat the compiler into submission with a simple cast i.e. <code>(void)DoSomething(bloop)</code>.   There is a point where you have to rely on other programmers reading documentation and doing what is needed.",
+        "user": {
+          "id": 4706785,
+          "name": "Peter"
+        }
+      },
+      {
+        "id": 120995392,
+        "body": "@SamVarshavchik Thanks for the comment - I updated the question to clarify that we can&#39;t use an exception here.  I understand this is not the &quot;native&quot; way.  The question is whether it&#39;s possible.",
+        "user": {
+          "id": 1610174,
+          "name": "daemacles"
+        }
+      },
+      {
+        "id": 120995397,
+        "body": "If a warning is turned into an error, it&#39;s a true error that will fail the build. Why is this a problem? Isn&#39;t it what you want?",
+        "user": {
+          "id": 440558,
+          "name": "Some programmer dude"
+        }
+      },
+      {
+        "id": 120995411,
+        "body": "And what is the <i>actual</i> problem this is supposed to solve? Right now this question is more of an <a href=\"https://xyproblem.info/\" rel=\"nofollow noreferrer\">XY problem</a>.",
+        "user": {
+          "id": 440558,
+          "name": "Some programmer dude"
+        }
+      },
+      {
+        "id": 120995444,
+        "body": "Your MustCheck could check in its destructor (one that is marked <code>noexcept(false)</code>) if the object was checked, and if not then throw.  With the caveat that if it throws in the context of a throw-in-flight, it will terminate the application.",
+        "user": {
+          "id": 4641116,
+          "name": "Eljay"
+        }
+      },
+      {
+        "id": 120995445,
+        "body": "@Peter that&#39;s completely true - and (void) casting requires the programmer to explicitly acknowledge they are intentionally circumventing the compiler.  If context helps, this is for an API with a large surface area and a lot of junior programmers where we want to add explicit DANGER WILL ROBINSON alerts in the manner I described",
+        "user": {
+          "id": 1610174,
+          "name": "daemacles"
+        }
+      },
+      {
+        "id": 120995488,
+        "body": "@Eljay yes, I had a similar idea that would be caught at runtime, and that might be what we need to go with, however I was wondering if there is a way to encode this behavior in the type system itself such that &quot;not checking&quot; is equivalent to a language/type error.",
+        "user": {
+          "id": 1610174,
+          "name": "daemacles"
+        }
+      },
+      {
+        "id": 120995525,
+        "body": "Nope, C++&#39;s type system does not work this way.",
+        "user": {
+          "id": 3943312,
+          "name": "Sam Varshavchik"
+        }
+      },
+      {
+        "id": 120995551,
+        "body": "DoSomething could take two parameters: lambda to call on success, and lambda to call on failure.  That way, the caller is responsible for handling the success and failure cases explicitly (even if the handler is a no-op).",
+        "user": {
+          "id": 4641116,
+          "name": "Eljay"
+        }
+      },
+      {
+        "id": 120995565,
+        "body": "From what you describe, I suspect the <code>[[nodiscard]]</code> attribute, coupled with a build process that is configured (in a way that can&#39;t be changed by junior programmers) to treat warnings as errors will suffice.   Also, this seems a case where active mentoring of junior members of the team by senior members is warranted.   Essentially, getting junior programmers to do something necessary for the project is a non-technical problem, and a purely technical solution (forcing compilation to fail is a technical solution) to a non-technical problem is rarely a good idea.",
+        "user": {
+          "id": 4706785,
+          "name": "Peter"
+        }
+      },
+      {
+        "id": 120995572,
+        "body": "@Eljay The callback approach is interesting.  I hadn&#39;t considered it, but it conceptually could work.",
+        "user": {
+          "id": 1610174,
+          "name": "daemacles"
+        }
+      },
+      {
+        "id": 120995601,
+        "body": "@Peter All good points.  It&#39;s about layering safety.  I personally like to automate checking as much as possible, because humans err, and so this is an attempt to supplement social/process checks.  It might not be possible as I&#39;ve described, but still an interesting question.  And hopefully someday <code>[[cantdiscard]]</code> is added :)",
+        "user": {
+          "id": 1610174,
+          "name": "daemacles"
+        }
+      },
+      {
+        "id": 120995630,
+        "body": "<code>nodiscard</code> (configured to produce an error) does exactly what you are asking for -- there&#39;s no stronger error condition than producing an error . But you reject it out of hand with no real explanation. The code in your example will produce an error where requested, if function is marked [[nodiscard]] and you configure the compiler to produce an error for this.",
+        "user": {
+          "id": 1505939,
+          "name": "M.M"
+        }
+      },
+      {
+        "id": 120995637,
+        "body": "&quot;a type(s) that, if it&#39;s not assigned to a variable from a function return, the compiler flags an error.&quot; is possible but no help, as the coder could just make this assignment and then not use the resulting variable",
+        "user": {
+          "id": 1505939,
+          "name": "M.M"
+        }
+      }
+    ],
+    "answers": [
+      {
+        "id": 68462942,
+        "body": "<p>As mentioned in the comments you can use [[nodiscard]] as per:</p>\n<p><a href=\"https://docs.microsoft.com/en-us/cpp/cpp/attributes?view=msvc-160\" rel=\"nofollow noreferrer\">https://docs.microsoft.com/en-us/cpp/cpp/attributes?view=msvc-160</a></p>\n<p>And modify to use this warning as compile error:</p>\n<p><a href=\"https://docs.microsoft.com/en-us/cpp/preprocessor/warning?view=msvc-160\" rel=\"nofollow noreferrer\">https://docs.microsoft.com/en-us/cpp/preprocessor/warning?view=msvc-160</a></p>\n<p>That should cover your use case.</p>\n",
+        "creation": 1626830114,
+        "score": -1,
+        "user": {
+          "id": 8550160,
+          "name": "jman"
+        },
+        "accepted": false,
+        "comments": [
+          {
+            "id": 120995403,
+            "body": "A link to a solution is welcome, but please ensure your answer is useful without it: <a href=\"//meta.stackexchange.com/a/8259\">add context around the link</a> so your fellow users will have some idea what it is and why it’s there, then quote the most relevant part of the page you&#39;re linking to in case the target page is unavailable. <a href=\"//stackoverflow.com/help/deleted-answers\">Answers that are little more than a link may be deleted</a>. (And before you say that&#39;s not possible with MS, they broke millions of links when they changed from MSDN to docs.)",
+            "user": {
+              "id": 62576,
+              "name": "Ken White"
+            }
+          },
+          {
+            "id": 120995410,
+            "body": "Thanks - I updated the question to clarify that it&#39;s not enough to enable warnings-as-errors.",
+            "user": {
+              "id": 1610174,
+              "name": "daemacles"
+            }
+          }
+        ]
+      },
+      {
+        "id": 68463003,
+        "body": "<p>For doing this at runtime there are recipes online about &quot;exploding&quot; types (they assert on destruction if they where not checked).</p>\n<p>For compile-time it is more tricky, returning (for example a <code>bool</code>) with <code>[[nodiscard]]</code> is not enough because there are ways of no discarding without checking for example assigning to a (bool) variable.</p>\n<p>I think the next layer is to active <code>-Wunused-variable -Wunused-expression</code> (and treat it like an error).\nThen it is much harder to not check the bool because that is pretty much to only operation you can really do with a bool.\n(You can assign to another bool but then you will have to use that variable).</p>\n<p>I guess that's quite enough.</p>\n<p>There are still Machiavelian ways to mark a variable as used.\nFor that you can invent a <code>bool</code>-like type (class) that is 1) <code>[[nodiscard]]</code> itself (classes can be marked <code>nodiscard</code>), 2) the only supported operation is <code>==(bool)</code> or <code>!=(bool)</code> (maybe not even copyable) and return that from your function. (as a bonus you don't need to mark your function as <code>[[nodiscard]]</code> because it is automatic.)</p>\n<p>I guess it is impossible to avoid something like <code>(void)b;</code> but that in itself becomes a flag.</p>\n",
+        "creation": 1626830859,
+        "score": 1,
+        "user": {
+          "id": 225186,
+          "name": "alfC"
+        },
+        "accepted": false,
+        "comments": [
+          {
+            "id": 120995468,
+            "body": "C++ is meant to protect against Murphy, not Machiavelli.",
+            "user": {
+              "id": 4641116,
+              "name": "Eljay"
+            }
+          },
+          {
+            "id": 120995481,
+            "body": "@Eljay, I totally agree, that is why I pretty much would stop at &quot;I guess that is quite enough&quot;. What comes later is just a little game (and it has a little bonus). I think there is space for a <code>[[nodiscard]] class CheckedBool{...};</code> in a generic library.",
+            "user": {
+              "id": 225186,
+              "name": "alfC"
+            }
+          },
+          {
+            "id": 120995523,
+            "body": "@Eljay LOL!  I&#39;m using that next time someone complains about C++ ;)",
+            "user": {
+              "id": 1610174,
+              "name": "daemacles"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
