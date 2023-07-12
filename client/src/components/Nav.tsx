@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { updateSearch } from '../auth';
+import { updateDisplay, updateSearch, updateResults } from '../auth';
 import { getResults } from '../helpers/methods';
 import { BiSearch } from 'react-icons/bi';
 
@@ -10,7 +10,15 @@ export const Nav = (): React.JSX.Element => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
     if (e.key === 'Enter') {
-      getResults(search)
+      getResults(search, (err: Error | null, res: []) => {
+        if (err) {
+          dispatch(updateResults([]))
+          dispatch(updateDisplay('results'))
+        } else {
+          dispatch(updateResults(res))
+          dispatch(updateDisplay('results'))
+        }
+      })
       dispatch(updateSearch(''))
     }
   }
