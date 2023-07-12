@@ -17,8 +17,8 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
-router.get('/results', controllers.getResults)
-// router.get('/posts/:post_id?/:post_title', controllers.getPost)
+router.get('/results/:search?', controllers.getResults)
+router.get('/posts/:post_id?', controllers.getPost)
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);

@@ -1,7 +1,7 @@
 export type Display = 'home' | 'results' | 'post';
 
 export interface Result {
-  id: number,
+  post_id: number,
   title: string,
   body: string,
   creation: number,

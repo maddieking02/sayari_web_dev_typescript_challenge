@@ -5,10 +5,12 @@ const initialState: {
   display: Display;
   search: string;
   results: [];
+  post: [];
 } = {
   display: 'home',
   search: '',
-  results: []
+  results: [],
+  post: [],
 }
 
 export const dataSlice = createSlice({
@@ -24,8 +26,11 @@ export const dataSlice = createSlice({
     updateResults: (state, action) => {
       state.results = action.payload;
     },
+    updatePost: (state, action) => {
+      state.post = action.payload;
+    }
   }
 });
 
-export const { updateDisplay, updateSearch, updateResults } = dataSlice.actions;
+export const { updateDisplay, updateSearch, updateResults, updatePost } = dataSlice.actions;
 export default dataSlice.reducer;

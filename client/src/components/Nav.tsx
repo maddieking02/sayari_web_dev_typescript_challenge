@@ -3,6 +3,7 @@ import { useAppSelector, useAppDispatch } from '../hooks';
 import { updateDisplay, updateSearch, updateResults } from '../auth';
 import { getResults } from '../helpers/methods';
 import { BiSearch } from 'react-icons/bi';
+import Logo from '../assets/stackoverfaux.png';
 
 export const Nav = (): React.JSX.Element => {
   const { search } = useAppSelector(state => state.data)
@@ -25,8 +26,8 @@ export const Nav = (): React.JSX.Element => {
 
   return (
     <div id="nav-contain" className="center-items-row">
-      <div id="logo-contain" className="center-items-row">
-        LOGO
+      <div id="logo-contain" className="center-items-row pointer" onClick={() => dispatch(updateDisplay('home'))}>
+        <img id="logo" src={Logo} alt=""/>
       </div>
       <div id="icon-input-contain" className="center-items-row">
         <BiSearch />
@@ -40,8 +41,8 @@ export const Nav = (): React.JSX.Element => {
         ></input>
       </div>
       <div id="button-contain" className="center-items-row">
-        <button type="button">Log in</button>
-        <button type="button">Sign Up</button>
+        <button className="button" type="button">Log in</button>
+        <button className="button" type="button">Sign Up</button>
       </div>
     </div>
   );

@@ -21,7 +21,10 @@ time, mark, audio, video {
 
 /* -- all */
 html, body {
+	max-width: 100%;
+	min-height: 100%;
 	border: 2px solid red;
+	font-family: 'Noto Sans', sans-serif;
 }
 
 .center-items-row {
@@ -37,12 +40,64 @@ html, body {
 	align-items: center;
 }
 
+.pointer {
+	cursor: pointer;
+}
+
+/* -- home */
+#description {
+  font-family: 'Poppins', sans-serif;
+  font-size: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* .bg {
+	top: 10%;
+  position: fixed;
+  max-width: 100%;
+  min-height: 100%;
+  z-index: 0;
+  opacity: 20%;
+} */
+
 /* -- navbar */
 #nav-contain {
 	border: 2px solid green;
+	justify-content: space-between;
+}
+
+#logo-contain {
+	border: 2px solid blue;
+}
+
+#logo {
+	max-width: 250px;
 }
 
 #icon-input-contain {
 	width: fit-content;
 	border: 2px solid blue;
+}
+
+#icon-input-contain {
+	width: 50%;
+}
+
+#search-input {
+	width: 100%;
+	font-size: 16px;
+}
+
+#button-contain {
+	border: 2px solid blue;
+}
+
+.button {
+	font-size: 16px;
+}
+
+/* -- results */
+.result-title {
+	color: #0074CC;
 }

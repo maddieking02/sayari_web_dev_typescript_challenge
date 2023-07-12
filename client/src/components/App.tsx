@@ -1,9 +1,9 @@
 import React from "react";
-import bgImage from "../assets/pink-blue-bg.png";
-import { useAppSelector, useAppDispatch } from '../hooks';
+import { useAppSelector } from '../hooks';
 import { Nav } from "./Nav";
 import { Results } from "./Results";
 import { Home } from "./Home";
+import { Post } from "./Post";
 
 export const App = (): React.JSX.Element => {
   const { display } = useAppSelector(state => state.data)
@@ -11,9 +11,13 @@ export const App = (): React.JSX.Element => {
   return (
     <div>
       <Nav/>
-      <h1>Test</h1>
       {/* <img src={bgImage} alt="" /> */}
-      {display === 'home' ? <Home /> : <Results />}
+      {
+        display === 'home' ? <Home /> :
+        display === 'results' ? <Results /> :
+        display === 'post' ? <Post /> :
+        null
+      }
     </div>
   );
 };
