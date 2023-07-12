@@ -1,3 +1,4 @@
+// -- JSON FILE TYPES
 export interface User {
   id: number,
   name: string
@@ -28,4 +29,15 @@ export interface Post {
   user: User,
   comments: Comment[],
   answers: Answer[]
+}
+
+// -- REQUEST TYPES
+export interface ReqPost {
+  id: number,
+  title: string,
+  body: string,
+  creation: number,
+  score: number,
+  user_id: number,
+  user_name: string
 }

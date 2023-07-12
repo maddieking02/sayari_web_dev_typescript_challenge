@@ -16,8 +16,11 @@ export const Nav = (): React.JSX.Element => {
   }
 
   return (
-    <div>
-      <div id="icon-input-contain" className="center-items">
+    <div id="nav-contain" className="center-items-row">
+      <div id="logo-contain" className="center-items-row">
+        LOGO
+      </div>
+      <div id="icon-input-contain" className="center-items-row">
         <BiSearch />
         <input
           id="search-input"
@@ -27,6 +30,10 @@ export const Nav = (): React.JSX.Element => {
           onChange={(e) => dispatch(updateSearch(e.target.value))}
           onKeyDown={(e) => handleKeyDown(e)}
         ></input>
+      </div>
+      <div id="button-contain" className="center-items-row">
+        <button type="button">Log in</button>
+        <button type="button">Sign Up</button>
       </div>
     </div>
   );

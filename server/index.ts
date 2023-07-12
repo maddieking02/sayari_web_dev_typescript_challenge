@@ -4,9 +4,11 @@ const router = require("express").Router();
 const path = require("path");
 const { controllers } = require('./api/controllers');
 const PORT = process.env.PORT;
+var cors = require('cors')
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
 app.use(router);
 app.use(express.static(path.join(__dirname, "../client/dist")));
@@ -16,7 +18,7 @@ app.get("*", (req, res) => {
 });
 
 router.get('/results', controllers.getResults)
-router.get('/posts/:post_id?/:post_title', controllers.getPost)
+// router.get('/posts/:post_id?/:post_title', controllers.getPost)
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);

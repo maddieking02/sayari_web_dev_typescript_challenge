@@ -24,13 +24,25 @@ html, body {
 	border: 2px solid red;
 }
 
-.center-items {
+.center-items-row {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
+.center-items-column {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
 /* -- navbar */
+#nav-contain {
+	border: 2px solid green;
+}
+
 #icon-input-contain {
+	width: fit-content;
 	border: 2px solid blue;
 }
