@@ -9,3 +9,42 @@ export interface Result {
   user_id: number,
   user_name: string
 }
+
+export interface PostComment {
+  comment_id: number,
+  body: string,
+  user_id: number,
+  parent_post_id: number
+  parent_answer_id: null
+}
+
+export interface AnswerComment {
+  comment_id: number,
+  body: string,
+  user_id: number,
+  parent_post_id: null,
+  parent_answer_id: number
+}
+
+export interface Answer {
+  answer_id: number,
+  parent_post_id: number,
+  body: string,
+  creation: number,
+  accepted: boolean,
+  score: number,
+  user_id: number,
+  comments?: AnswerComment[]
+}
+
+export interface Post {
+  post_id: string | null,
+  title: string | null,
+  body: string | null,
+  creation: string | '',
+  score: number | null,
+  user_id: number | null,
+  name: string | null,
+  answers?: Answer[],
+  comments?: PostComment[]
+}

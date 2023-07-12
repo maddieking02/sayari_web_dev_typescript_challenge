@@ -36,7 +36,7 @@ export const Results = (): React.JSX.Element => {
           <div key={(idx + 1) * Math.random()} style={{ border: '2px solid grey'}}>
             <div key={(idx + 1) * Math.random()} data-id={result.post_id} onClick={(e) => handleTitleClick(e)} className="result-title pointer">{result.title}</div>
             <div key={(idx + 1) * Math.random()} >{ReactHtmlParser(result.body)}</div>
-            <div key={(idx + 1)* Math.random()}>{result.user_name} asked {(formattedDate)}</div>
+            <div key={(idx + 1)* Math.random()}>{result.user_name} asked {formattedDate}</div>
           </div>
         )
       }) : null}

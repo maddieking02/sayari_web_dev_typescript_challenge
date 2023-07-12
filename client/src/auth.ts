@@ -1,16 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Display } from './types';
+import { Display, Post } from './types';
 
 const initialState: {
   display: Display;
   search: string;
   results: [];
-  post: [];
+  post: Post;
 } = {
   display: 'home',
   search: '',
   results: [],
-  post: [],
+  post: {
+    post_id: null,
+    title: null,
+    body: null,
+    creation: '',
+    score: null,
+    user_id: null,
+    name: null
+  }
 }
 
 export const dataSlice = createSlice({

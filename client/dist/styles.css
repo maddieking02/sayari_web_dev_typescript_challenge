@@ -101,3 +101,12 @@ html, body {
 .result-title {
 	color: #0074CC;
 }
+
+/* -- post */
+.comment-contain {
+	border: 2px solid grey;
+}
+
+.answer-contain {
+	border: 2px solid cyan;
+}
