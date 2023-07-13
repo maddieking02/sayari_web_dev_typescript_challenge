@@ -15,6 +15,7 @@ module.exports = {
   getPost: (req: Request, res: Response) => {
     getPost((err: Error | null, data: ReqPost[] ) => {
       if (err) {
+        console.log('WHAT IS THE ERROR IN CONTROLLER?', err)
         res.status(404).send(err);
       } else {
         res.status(200).send(data);

@@ -48,38 +48,41 @@ module.exports = {
 
       db.query(postQuery, [post_id])
         .then(res => {
-          Promise.all(res.rows[0].answers.map(answer => {
-            return db.query(`SELECT * FROM comments WHERE parent_answer_id=${answer.answer_id}`)
-            .then(res => {
-              answer.comments = res.rows;
-              return answer;
-            })
-          }))
-            .then(updatedAnswers => {
-              res.rows[0].answers = updatedAnswers;
-              const answerPromises = res.rows[0].answers.map(answer => {
-                return Promise.all(answer.comments.map(comment => {
-                  return db.query(`SELECT name FROM users WHERE user_id = ${comment.user_id}`)
-                    .then(commentUser => {
-                      comment.user_name = commentUser.rows[0].name;
-                      return comment;
-                    })
-                }))
-                .then(updatedComments => {
-                  answer.comments = updatedComments;
-                  return answer
+          if (res.rows[0].answers && res.rows[0].answers.length > 0) {
+            return Promise.all(res.rows[0]?.answers.map(answer => {
+              return db.query(`SELECT * FROM comments WHERE parent_answer_id=${answer.answer_id}`)
+                .then(res => {
+                  answer.comments = res.rows;
+                  return answer;
                 })
-              })
-              return Promise.all(answerPromises)
-                .then(updatedAnswersWithComments => {
-                  res.rows[0].answers = updatedAnswersWithComments;
-                  // console.log('Updated post:', res.rows[0]);
-                  callback(null, res.rows[0]);
+            }))
+              .then(updatedAnswers => {
+                res.rows[0].answers = updatedAnswers || [];
+                const answerPromises = res.rows[0].answers?.map(answer => {
+                  return Promise.all(answer.comments?.map(comment => {
+                    return db.query(`SELECT name FROM users WHERE user_id = ${comment.user_id}`)
+                      .then(commentUser => {
+                        comment.user_name = commentUser.rows[0].name;
+                        return comment;
+                      })
+                  }))
+                    .then(updatedComments => {
+                      answer.comments = updatedComments || null;
+                      return answer;
+                    })
                 });
-            })
+                return Promise.all(answerPromises)
+                  .then(updatedAnswersWithComments => {
+                    res.rows[0].answers = updatedAnswersWithComments;
+                    callback(null, res.rows[0]);
+                  });
+              });
+          } else {
+            callback(null, res.rows[0]);
+          }
         })
         .catch(err => {
-          callback(err)
-        })
+          callback(err);
+        });
   }
 }
