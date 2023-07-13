@@ -36,3 +36,6 @@ CREATE TABLE comments (
   FOREIGN KEY (parent_post_id) REFERENCES posts(post_id),
   FOREIGN KEY (parent_answer_id) REFERENCES answers(answer_id)
 );
+
+CREATE INDEX post_id_idx ON posts (post_id);
+CREATE INDEX user_id_idx ON posts (user_id);

@@ -30,7 +30,7 @@ export const Nav = (): React.JSX.Element => {
         <img id="logo" src={Logo} alt=""/>
       </div>
       <div id="icon-input-contain" className="center-items-row">
-        <BiSearch />
+        <BiSearch size={25}/>
         <input
           id="search-input"
           type="text"
@@ -41,8 +41,8 @@ export const Nav = (): React.JSX.Element => {
         ></input>
       </div>
       <div id="button-contain" className="center-items-row">
-        <button className="button" type="button">Log in</button>
-        <button className="button" type="button">Sign Up</button>
+        <button className="button" type="button">LOG IN</button>
+        <button className="button" type="button">SIGN UP</button>
       </div>
     </div>
   );

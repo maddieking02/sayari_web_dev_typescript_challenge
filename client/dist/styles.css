@@ -23,7 +23,7 @@ time, mark, audio, video {
 html, body {
 	max-width: 100%;
 	min-height: 100%;
-	border: 2px solid red;
+	/* border: 2px solid red; */
 	font-family: 'Noto Sans', sans-serif;
 	font-size: 14px;
 }
@@ -70,6 +70,13 @@ html, body {
 }
 
 /* -- home */
+#home-contain {
+	top: 50%;
+	left: 50%;
+	padding: 10em;
+	/* border: 5px solid pink; */
+}
+
 #description {
   font-family: 'Poppins', sans-serif;
   font-size: 60px;
@@ -88,13 +95,14 @@ html, body {
 
 /* -- navbar */
 #nav-contain {
-	border: 2px solid green;
+	/* border: 2px solid green; */
+	border-bottom: 1px solid grey;
 	justify-content: space-between;
 	padding: 0.5em;
 }
 
 #logo-contain {
-	border: 2px solid blue;
+	/* border: 2px solid blue; */
 }
 
 #logo {
@@ -103,7 +111,7 @@ html, body {
 
 #icon-input-contain {
 	width: fit-content;
-	border: 2px solid blue;
+	/* border: 2px solid blue; */
 }
 
 #icon-input-contain {
@@ -115,18 +123,41 @@ html, body {
 	font-size: 16px;
 }
 
-#button-contain {
-	border: 2px solid blue;
+.button {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: .25rem;
+	background-color: #FFFFFF;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  justify-content: center;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  transition: all 250ms;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+	margin: 0.2em;
 }
 
-.button {
-	font-size: 16px;
+.button:hover,
+.button:focus {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.button:hover {
+  transform: translateY(-1px);
 }
 
 /* -- results */
 #search-results-contain {
-	border: 3px solid orange;
-	padding: 1em;
+	/* border: 3px solid orange; */
+	padding: 2em;
 }
 
 #search-results {

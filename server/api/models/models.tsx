@@ -1,24 +1,31 @@
 import { ReqPost } from '../../types';
+import { QueryResult, QueryResultError } from 'pg';
+import { from, forkJoin } from 'rxjs';
+import { switchMap, map, catchError } from 'rxjs/operators';
 const db = require('../../db/db');
 
 module.exports = {
   getResults: (callback, id: { search: string }) => {
-    db.query(`SELECT * FROM posts WHERE title LIKE '%${id.search}%'`)
-      .then(res => {
-        Promise.all(res.rows.map(post => {
-          return db.query(`SELECT name FROM users WHERE user_id=${post.user_id}`)
-          .then(res => {
-            post.user_name = res.rows[0].name;
-            return post;
-          })
-        }))
-          .then((updatedPosts: ReqPost[]) => {
-            callback(null, updatedPosts)
-          })
+    from(db.query(`SELECT * FROM posts WHERE title LIKE '%${id.search}%'`)).pipe(
+      switchMap((res: QueryResult) => {
+        const updatedResults = res.rows.map(post => {
+          return from(db.query(`SELECT name FROM users WHERE user_id=${post.user_id}`)).pipe(
+            map((res: QueryResult) => {
+              post.user_name = res.rows[0].name;
+              return post;
+            }),
+          );
+        });
+        return forkJoin(updatedResults);
       })
-      .catch(err => {
-        callback(err)
-      })
+    ).subscribe({
+      next: (updatedPosts : ReqPost[]) => {
+        callback(null, updatedPosts);
+      },
+      error: (err: QueryResultError) => {
+        callback(err);
+      }
+    });
   },
   getPost: (callback, id: { id: number }) => {
     const post_id = Number(id.id);

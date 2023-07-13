@@ -1,6 +1,6 @@
 const db = require('./db')
-const data = require('./stackoverfaux.json');
-// const data = require('./testdata.json');
+// const data = require('./stackoverfaux.json');
+const data = require('./testdata.json');
 import type { User, Comment, Answer, Post } from '../types';
 
 data.forEach(( post: Post ) => {
@@ -94,14 +94,10 @@ data.forEach(( post: Post ) => {
 
     insertUser()
       .then(() => {
-        console.log('SUCCESS in post_comment_user insertion');
         return insertComment();
       })
-      .then(() => {
-        console.log('SUCCESS in post_comment insertion');
-      })
-      .catch((error) => {
-        console.log('ERROR:', error);
+      .catch((err) => {
+        console.log('user already exists');
         return insertComment();
       });
   });
@@ -146,11 +142,10 @@ data.forEach(( post: Post ) => {
           [answer.id, post.id, answer.body, answer.creation, answer.score, answer.accepted, answer.user.id]
         )
           .then((res) => {
-            console.log('SUCCESS in post_answers insertion');
             resolve(res);
           })
           .catch((err) => {
-            console.log('ERROR in post_answers insertion:', err);
+            console.log(err);
             reject(err);
           });
       });
@@ -197,11 +192,10 @@ data.forEach(( post: Post ) => {
             [comment.id, comment.body, comment.user.id, answer.id] // need to wait until answer.id is inserted into answers table
           )
             .then((res) => {
-              console.log('SUCCESS in answer_comment insertion');
               resolve(res);
             })
             .catch((err) => {
-              console.log('ERROR in answer_comment insertion:', err);
+              console.log(err);
               reject(err);
             });
         });
@@ -217,11 +211,8 @@ data.forEach(( post: Post ) => {
     })
 
     insertUser()
-    .then(() => {
-      console.log('SUCCESS in insertUser');
-    })
-    .catch((error) => {
-      console.log('ERROR in insertUser:', error);
+    .catch((err) => {
+      console.log(err);
     })
     .then(() => {
       // Regardless of success or failure, run insertAnswer() and chain insertAnswerComments()
@@ -231,33 +222,26 @@ data.forEach(( post: Post ) => {
       // insertAnswer() succeeded, now run insertAnswerComments()
       return insertAnswerComments();
     })
-    .then(() => {
-      console.log('Both insertAnswer() and insertAnswerComments() have completed');
-    })
-    .catch((error) => {
-      console.log('ERROR:', error);
+    .catch((err) => {
+      console.log(err);
     });
   })
 
   // -- INVOKE ALL SEEDING FUNCTIONS
   insertUser()
   .then(() => {
-    console.log('SUCCESS in user insertion');
     return insertPost();
   })
   .then(() => {
-    console.log('SUCCESS in post insertion');
     return insertPostComments()
   })
   .then(() => {
-    console.log('SUCCESS in post_comments insertion');
     return insertPostAnswers()
   })
   .then(() => {
-    console.log('SUCCESS in post_answers insertion');
   })
-  .catch((error) => {
-    console.log('ERROR:', error);
+  .catch((err) => {
+    console.log(err);
   });
 
 })
