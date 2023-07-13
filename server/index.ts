@@ -3,7 +3,7 @@ const express = require("express");
 const router = require("express").Router();
 const path = require("path");
 const { controllers } = require('./api/controllers');
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const cors = require('cors')
 
 const app = express();
