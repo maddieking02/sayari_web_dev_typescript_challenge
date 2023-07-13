@@ -1,20 +1,44 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { Display, Post } from './types';
 
 const initialState: {
-  test: string;
+  display: Display;
+  search: string;
+  results: [];
+  post: Post;
 } = {
-  test: ''
+  display: 'home',
+  search: '',
+  results: [],
+  post: {
+    post_id: null,
+    title: null,
+    body: null,
+    creation: '',
+    score: null,
+    user_id: null,
+    name: null
+  }
 }
 
-export const sampleSlice = createSlice({
-  name: 'sample',
+export const dataSlice = createSlice({
+  name: 'stackoverfaux',
   initialState,
   reducers: {
-    updateTest: (state, action) => {
-      state.test = action.payload;
+    updateDisplay: (state, action) => {
+      state.display = action.payload;
     },
+    updateSearch: (state, action) => {
+      state.search = action.payload;
+    },
+    updateResults: (state, action) => {
+      state.results = action.payload;
+    },
+    updatePost: (state, action) => {
+      state.post = action.payload;
+    }
   }
 });
 
-export const { updateTest } = sampleSlice.actions;
-export default sampleSlice.reducer;
+export const { updateDisplay, updateSearch, updateResults, updatePost } = dataSlice.actions;
+export default dataSlice.reducer;

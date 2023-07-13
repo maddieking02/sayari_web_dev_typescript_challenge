@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import sample from './auth';
+import data from './auth';
 
 export const store = configureStore({
   reducer: {
-    sample,
+    data,
   },
 });
 

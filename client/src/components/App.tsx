@@ -1,13 +1,22 @@
 import React from "react";
-import bgImage from "../assets/pink-blue-bg.png";
+import { useAppSelector } from '../hooks';
+import { Nav } from "./Nav";
+import { Results } from "./Results";
+import { Home } from "./Home";
+import { Post } from "./Post";
 
-const App = (): React.JSX.Element => {
+export const App = (): React.JSX.Element => {
+  const { display } = useAppSelector(state => state.data)
+
   return (
     <div>
-      <h1>Test</h1>
-      <img src={bgImage} alt="" />
+      <Nav/>
+      {
+        display === 'home' ? <Home /> :
+        display === 'results' ? <Results /> :
+        display === 'post' ? <Post /> :
+        null
+      }
     </div>
   );
 };
-
-export default App;
