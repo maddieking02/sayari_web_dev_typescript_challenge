@@ -10,7 +10,7 @@ module.exports = {
       } else {
         res.status(200).send(data);
       }
-    }, req.query)
+    }, req.query);
   },
   getPost: (req: Request, res: Response) => {
     getPost((err: Error | null, data: ReqPost[] ) => {
@@ -19,6 +19,6 @@ module.exports = {
       } else {
         res.status(200).send(data);
       }
-    }, req.query)
+    }, req.query);
   }
-}
+};

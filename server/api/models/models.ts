@@ -12,9 +12,15 @@ module.exports = {
             post.user_name = res.rows[0].name;
             return post;
           })
+          .catch((err: QueryResultError) => {
+            callback(err);
+          })
         }))
           .then((updatedPosts: ReqPost[]) => {
             callback(null, updatedPosts)
+          })
+          .catch((err: QueryResultError) => {
+            callback(err);
           })
       })
       .catch((err: QueryResultError) => {
@@ -56,6 +62,9 @@ module.exports = {
               answer.comments = res.rows;
               return answer;
             })
+            .catch((err: QueryResultError) => {
+              callback(err);
+            })
         }))
           .then((updatedAnswers: QueryResult) => {
             res.rows[0].answers = updatedAnswers || [];
@@ -66,17 +75,26 @@ module.exports = {
                     comment.user_name = commentUser.rows[0].name;
                     return comment;
                   })
+                  .catch((err: QueryResultError) => {
+                    callback(err);
+                  })
               }))
                 .then(updatedComments => {
                   answer.comments = updatedComments || null;
                   return answer;
+                })
+                .catch((err: QueryResultError) => {
+                  callback(err);
                 })
             });
             return Promise.all(answerPromises)
               .then((updatedAnswersWithComments: QueryResult) => {
                 res.rows[0].answers = updatedAnswersWithComments;
                 callback(null, res.rows[0]);
-              });
+              })
+              .catch((err: QueryResultError) => {
+                callback(err);
+              })
           });
       } else {
         callback(null, res.rows[0]);
