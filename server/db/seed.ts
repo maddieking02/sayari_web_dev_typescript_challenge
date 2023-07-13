@@ -53,10 +53,8 @@ data.forEach(( post: Post ) => {
               reject(err);
             } else {
               if (res.rows.length > 0) {
-                // User already exists, resolve with existing user data
                 resolve(res.rows[0]);
               } else {
-                // User doesn't exist, insert the new user
                 db.query(
                   'INSERT INTO users(user_id, name) VALUES ($1, $2)',
                   [comment.user.id, comment.user.name],
@@ -163,10 +161,8 @@ data.forEach(( post: Post ) => {
                 reject(err);
               } else {
                 if (res.rows.length > 0) {
-                  // User already exists, resolve with existing user data
                   resolve(res.rows[0]);
                 } else {
-                  // User doesn't exist, insert the new user
                   db.query(
                     'INSERT INTO users(user_id, name) VALUES ($1, $2)',
                     [comment.user.id, comment.user.name],
@@ -189,7 +185,7 @@ data.forEach(( post: Post ) => {
         return new Promise((resolve, reject) => {
           db.query(
             'INSERT INTO comments(comment_id, body, user_id, parent_answer_id) VALUES ($1, $2, $3, $4)',
-            [comment.id, comment.body, comment.user.id, answer.id] // need to wait until answer.id is inserted into answers table
+            [comment.id, comment.body, comment.user.id, answer.id]
           )
             .then((res) => {
               resolve(res);
@@ -215,11 +211,9 @@ data.forEach(( post: Post ) => {
       console.log(err);
     })
     .then(() => {
-      // Regardless of success or failure, run insertAnswer() and chain insertAnswerComments()
       return insertAnswer();
     })
     .then(() => {
-      // insertAnswer() succeeded, now run insertAnswerComments()
       return insertAnswerComments();
     })
     .catch((err) => {

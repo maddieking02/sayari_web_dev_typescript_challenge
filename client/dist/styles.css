@@ -23,7 +23,6 @@ time, mark, audio, video {
 html, body {
 	max-width: 100%;
 	min-height: 100%;
-	/* border: 2px solid red; */
 	font-family: 'Noto Sans', sans-serif;
 	font-size: 14px;
 }
@@ -209,14 +208,9 @@ html, body {
 
 /* -- navbar */
 #nav-contain {
-	/* border: 2px solid green; */
 	border-bottom: 1px solid grey;
 	justify-content: space-between;
 	padding: 0.5em;
-}
-
-#logo-contain {
-	/* border: 2px solid blue; */
 }
 
 #logo {
@@ -225,7 +219,6 @@ html, body {
 
 #icon-input-contain {
 	width: fit-content;
-	/* border: 2px solid blue; */
 }
 
 #icon-input-contain {
@@ -270,7 +263,6 @@ html, body {
 
 /* -- results */
 #search-results-contain {
-	/* border: 3px solid orange; */
 	padding: 2em;
 }
 
@@ -306,7 +298,6 @@ html, body {
 
 /* -- post */
 #post-contain {
-	/* border: 6px dashed purple; */
 	padding: 1em;
 	margin: 2em;
 }
@@ -326,10 +317,6 @@ html, body {
 	margin-bottom: 1em;
 	font-weight: 400;
 	font-size: 20px;
-}
-
-.answer-contain {
-	/* border: 2px solid cyan; */
 }
 
 /* -- codepen @Nils Binder */

@@ -50,9 +50,6 @@ export const Post = (): React.JSX.Element => {
               )
             })}
           </div>
-          {/* <div>
-            {post.score}
-          </div> */}
         </div>
       : null}
     </div>
