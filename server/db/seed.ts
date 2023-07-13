@@ -1,6 +1,6 @@
 const db = require('./db')
-// const data = require('./stackoverfaux.json');
-const data = require('./testdata.json');
+const data = require('./stackoverfaux.json');
+// const data = require('./testdata.json');
 import type { User, Comment, Answer, Post } from '../types';
 
 data.forEach(( post: Post ) => {
@@ -97,7 +97,7 @@ data.forEach(( post: Post ) => {
         return insertComment();
       })
       .catch((err) => {
-        console.log('user already exists');
+        console.log('User Already Exists');
         return insertComment();
       });
   });
