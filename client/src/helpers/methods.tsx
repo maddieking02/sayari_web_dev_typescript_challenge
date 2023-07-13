@@ -13,7 +13,6 @@ export const getResults = (search: string, callback: (err: Error | null, res: []
 export const getPost = (id: number, callback: (err: Error | null, res: []) => void) => {
   axios.get<[]>(`http://localhost:3000/posts/${id}`, { params: { id } })
     .then((res: AxiosResponse<[]>) => {
-      console.log('success in CLIENT getPost: ', res.data)
       callback(null, res.data);
     })
     .catch((err: Error) => {

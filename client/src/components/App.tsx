@@ -11,7 +11,6 @@ export const App = (): React.JSX.Element => {
   return (
     <div>
       <Nav/>
-      {/* <img src={bgImage} alt="" /> */}
       {
         display === 'home' ? <Home /> :
         display === 'results' ? <Results /> :

@@ -26,17 +26,20 @@ export const Results = (): React.JSX.Element => {
   }
 
   return (
-    <div>
-      <h1>Search Results</h1>
-      <div>{results.length} results</div>
+    <div id="search-results-contain">
+      <h1 id="search-results">Search Results</h1>
+      <div id="search-num">{results.length} results</div>
       {results.length > 0 ? results.map((result: Result, idx: number)=> {
         const formattedDate = format(new Date(result.creation * 1000), 'MM/dd/yyyy');
 
         return (
-          <div key={(idx + 1) * Math.random()} style={{ border: '2px solid grey'}}>
-            <div key={(idx + 1) * Math.random()} data-id={result.post_id} onClick={(e) => handleTitleClick(e)} className="result-title pointer">{result.title}</div>
-            <div key={(idx + 1) * Math.random()} >{ReactHtmlParser(result.body)}</div>
-            <div key={(idx + 1)* Math.random()}>{result.user_name} asked {formattedDate}</div>
+          <div key={(idx + 1) * Math.random()} className="result-contain">
+            <div key={(idx + 1) * Math.random()} data-id={result.post_id} onClick={(e) => handleTitleClick(e)} className="title result-title pointer">{result.title}</div>
+            <div key={(idx + 1) * Math.random()} className="result-body">
+              {ReactHtmlParser(result.body.substring(0, 300))}
+              {result.body.length > 300 && '...'}
+            </div>
+            <div key={(idx + 1)* Math.random()} className="user">{result.user_name} <p className="user-action">asked {formattedDate}</p></div>
           </div>
         )
       }) : null}
