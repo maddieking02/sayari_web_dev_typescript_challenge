@@ -27,15 +27,17 @@ module.exports = {
       SELECT p.*, u.*,
       (SELECT json_agg(answer)
         FROM (
-          SELECT a.*
+          SELECT a.*, u_answer.name AS user_name
           FROM answers a
+          JOIN users u_answer ON a.user_id = u_answer.user_id
           WHERE a.parent_post_id = p.post_id
         ) answer
         ) AS answers,
         (SELECT json_agg(comment)
         FROM (
-          SELECT c.*
+          SELECT c.*, u_comment.name AS user_name
           FROM comments c
+          JOIN users u_comment ON c.user_id = u_comment.user_id
           WHERE c.parent_post_id = p.post_id
         ) comment
         ) AS comments
@@ -55,16 +57,29 @@ module.exports = {
           }))
             .then(updatedAnswers => {
               res.rows[0].answers = updatedAnswers;
-              console.log('this is updatedPosts: ', res.rows[0])
-              callback(null, res.rows[0])
+              const answerPromises = res.rows[0].answers.map(answer => {
+                return Promise.all(answer.comments.map(comment => {
+                  return db.query(`SELECT name FROM users WHERE user_id = ${comment.user_id}`)
+                    .then(commentUser => {
+                      comment.user_name = commentUser.rows[0].name;
+                      return comment;
+                    })
+                }))
+                .then(updatedComments => {
+                  answer.comments = updatedComments;
+                  return answer
+                })
+              })
+              return Promise.all(answerPromises)
+                .then(updatedAnswersWithComments => {
+                  res.rows[0].answers = updatedAnswersWithComments;
+                  // console.log('Updated post:', res.rows[0]);
+                  callback(null, res.rows[0]);
+                });
             })
         })
         .catch(err => {
           callback(err)
         })
   }
-
-  // pull all from posts(post_id) + username(post_id) + answers(post_id) + comments(post_id)
-    // use json agg
-  // pull all comments(answer_id)
 }

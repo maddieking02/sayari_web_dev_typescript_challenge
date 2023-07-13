@@ -14,8 +14,9 @@ export interface PostComment {
   comment_id: number,
   body: string,
   user_id: number,
-  parent_post_id: number
-  parent_answer_id: null
+  parent_post_id: number,
+  parent_answer_id: null,
+  user_name: string
 }
 
 export interface AnswerComment {
@@ -23,7 +24,8 @@ export interface AnswerComment {
   body: string,
   user_id: number,
   parent_post_id: null,
-  parent_answer_id: number
+  parent_answer_id: number,
+  user_name: string
 }
 
 export interface Answer {
@@ -34,6 +36,7 @@ export interface Answer {
   accepted: boolean,
   score: number,
   user_id: number,
+  user_name: string,
   comments?: AnswerComment[]
 }
 

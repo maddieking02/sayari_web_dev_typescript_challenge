@@ -15,10 +15,8 @@ module.exports = {
   getPost: (req: Request, res: Response) => {
     getPost((err: Error | null, data: ReqPost[] ) => {
       if (err) {
-        console.log('err inside controllers getPost: ', err)
         res.status(404).send(err);
       } else {
-        console.log('sucess inside controllers getPost: ', data)
         res.status(200).send(data);
       }
     }, req.query)

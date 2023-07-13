@@ -8,8 +8,6 @@ export const Post = (): React.JSX.Element => {
   const { results, post } = useAppSelector(state => state.data)
   const dispatch = useAppDispatch();
 
-  // const formattedPostDate = post.creation ? format(new Date(Number(post.creation) * 1000), 'MM/dd/yyyy') : '';
-
   const formatDate = (unix: string | number) => {
     const newDate = format(new Date(Number(unix) * 1000), 'MM/dd/yyyy');
     return newDate;
